@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, send_file
-import pdfkit
-import os
+from io import BytesIO
+from xhtml2pdf import pisa
 
 app = Flask(__name__)
 
@@ -13,9 +13,14 @@ def generate():
     data = request.form
     rendered = render_template('resume_template.html', data=data)
 
-    output_path = os.path.join('output', 'resume.pdf')
-    pdfkit.from_string(rendered, output_path)
-    return send_file(output_path, as_attachment=True)
+    pdf = BytesIO()
+    pisa_status = pisa.CreatePDF(rendered, dest=pdf)
+
+    if pisa_status.err:
+        return "Error generating PDF", 500
+
+    pdf.seek(0)
+    return send_file(pdf, as_attachment=True, download_name='resume.pdf')
 
 if __name__ == '__main__':
     app.run(debug=True)
