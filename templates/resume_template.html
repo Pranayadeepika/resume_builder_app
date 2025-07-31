@@ -1,21 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Generated Resume</title>
+    <meta charset="UTF-8">
+    <title>Resume - {{ data.name }}</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        h1 { color: #2c3e50; }
-        p { margin-bottom: 10px; }
-        strong { color: #333; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #f9f9f9;
+        }
+
+        .content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        hr {
+            border: 1px solid #000;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #007BFF;
+            font-size: 22px;
+            margin-top: 30px;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #666;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .highlight {
+            background-color: #e6e6e6;
+        }
+
+        .social {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .social a {
+            color: #007BFF;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+
+        .project {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>{{ data.name }}</h1>
-    <p><strong>Email:</strong> {{ data.email }}</p>
-    <p><strong>Phone:</strong> {{ data.phone }}</p>
-    <p><strong>Summary:</strong> {{ data.summary }}</p>
-    <p><strong>Education:</strong> {{ data.education }}</p>
-    <p><strong>Projects:</strong> {{ data.projects }}</p>
-    <p><strong>Skills:</strong> {{ data.skills }}</p>
+    <div class="content">
+        <h1>{{ data.name }}</h1>
+        {% if data.photo_url %}
+    <img src="{{ data.photo_url }}" alt="Photo" style="float:right;width:120px;border-radius:8px;margin-left:15px;">
+  {% endif %}
+
+
+        <hr>
+        <p><strong>{{ data.address }}</strong></p>
+        <p>Phone: {{ data.phone }} | Email: <a href="mailto:{{ data.email }}">{{ data.email }}</a></p>
+
+        <!-- Social Links -->
+        <div class="social">
+            {% if data.linkedin %}<a href="{{ data.linkedin }}">LinkedIn</a>{% endif %}
+            {% if data.github %}<a href="{{ data.github }}">GitHub</a>{% endif %}
+            {% if data.portfolio %}<a href="{{ data.portfolio }}">Portfolio</a>{% endif %}
+        </div>
+
+        <!-- Career Objective -->
+        <h2>Career Objective</h2>
+        <p>{{ data.summary }}</p>
+
+        <!-- Education Section -->
+        <h2>Education</h2>
+        <table>
+            <tr class="highlight">
+                <th>Degree</th>
+                <th>Institute</th>
+                <th>Year</th>
+                <th>Score</th>
+            </tr>
+            <tr>
+                <td>{{ data.edu_10 }}</td>
+                <td>{{ data.school_10 }}</td>
+                <td>{{ data.year_10 }}</td>
+                <td>{{ data.score_10 }}</td>
+            </tr>
+            <tr>
+                <td>{{ data.edu_12 }}</td>
+                <td>{{ data.school_12 }}</td>
+                <td>{{ data.year_12 }}</td>
+                <td>{{ data.score_12 }}</td>
+            </tr>
+            <tr>
+                <td>{{ data.degree }}</td>
+                <td>{{ data.university }}</td>
+                <td>{{ data.grad_year }}</td>
+                <td>{{ data.cgpa }}</td>
+            </tr>
+        </table>
+
+        <!-- Projects -->
+        <h2>Projects</h2>
+        <div class="project">
+            <p>{{ data.projects }}</p>
+        </div>
+    </div>
 </body>
 </html>
