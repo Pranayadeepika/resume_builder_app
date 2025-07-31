@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume Builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light p-5">
+
+    <!-- Butterfly Animation -->
+    <div class="butterfly-container">
+        <div class="butterfly" style="--i:1;"></div>
+        <div class="butterfly" style="--i:2;"></div>
+        <div class="butterfly" style="--i:3;"></div>
+        <div class="butterfly" style="--i:4;"></div>
+        <div class="butterfly" style="--i:5;"></div>
+    </div>
+
+    <!-- Resume Form -->
+    <div class="container bg-white p-4 rounded shadow" style="z-index: 1; position: relative;">
+        <h2 class="mb-4 text-primary">📝 Resume Builder</h2>
+        <form action="/generate" method="POST">
+            <div class="mb-3">
+                <input class="form-control" name="name" placeholder="Your Name" required>
+            </div>
+            <div class="mb-3">
+                <input class="form-control" name="email" placeholder="Email">
+            </div>
+            <div class="mb-3">
+                <input class="form-control" name="phone" placeholder="Phone">
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" name="summary" placeholder="Professional Summary" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" name="education" placeholder="Education Details" rows="4"></textarea>
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" name="projects" placeholder="Projects" rows="4"></textarea>
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" name="skills" placeholder="Skills" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Generate PDF</button>
+        </form>
+    </div>
+</body>
+</html>
