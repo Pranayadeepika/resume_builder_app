@@ -1,50 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>{{ data['name'][0] }} - Resume</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Resume</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 40px;
+            font-size: 11pt;
+        }
+        h2 {
+            font-size: 12pt;
+            color: #007bff;
+            border-bottom: 1px solid #007bff;
+            padding-bottom: 4px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .header h1 {
+            font-size: 22pt;
+            text-decoration: underline;
+            margin-bottom: 0;
+        }
+        .photo img {
+            width: 120px;
+            height: auto;
+            border: none;
+        }
+        .section {
+            margin-top: 15px;
+        }
+        .sign {
+            text-align: right;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    <div class="resume">
-        <div class="header">
-            <h1>{{ data['name'][0] }}</h1>
-            {% if data['photo_path'] %}
-            <img src="/{{ data['photo_path'] }}" class="photo" alt="Profile Photo">
-            {% endif %}
+    <div class="header">
+        <div>
+            <h1>{{ data.name }}</h1>
+            <p>Email: {{ data.email }}</p>
+            <p>Phone: {{ data.phone }}</p>
+            <p>Address: {{ data.address }}</p>
+            <p>LinkedIn: {{ data.linkedin }}</p>
         </div>
-        <hr>
-
-        <p><strong>Email:</strong> {{ data['email'][0] }}</p>
-        <p><strong>Phone:</strong> {{ data['phone'][0] }}</p>
-        <p><strong>Address:</strong> {{ data['address'][0] }}</p>
-        <p><strong>LinkedIn:</strong> {{ data['linkedin'][0] }}</p>
-        <p><strong>Date of Birth:</strong> {{ data['dob'][0] }}</p>
-        <p><strong>Gender:</strong> {{ data['gender'][0] }}</p>
-
-        <h2 class="section-title">Education</h2>
-        <p>{{ data['education'][0].replace('\\n', '<br>')|safe }}</p>
-
-        <h2 class="section-title">Projects</h2>
-        <p>{{ data['projects'][0].replace('\\n', '<br>')|safe }}</p>
-
-        <h2 class="section-title">Courses / Certificates</h2>
-        <p>{{ data['courses'][0].replace('\\n', '<br>')|safe }}</p>
-
-        <h2 class="section-title">Skills</h2>
-        <p>{{ data['skills'][0].replace('\\n', '<br>')|safe }}</p>
-
-        <h2 class="section-title">Languages Known</h2>
-        <p>{{ data['languages'][0].replace('\\n', '<br>')|safe }}</p>
-
-        <h2 class="section-title">Hobbies / Interests</h2>
-        <p>{{ data['hobbies'][0].replace('\\n', '<br>')|safe }}</p>
-
-        <br><br>
-        <div class="signature">
-            <p><strong>Signature:</strong> {{ data['sign'][0] }}</p>
-            <p><strong>Date:</strong> {{ datetime.now().strftime('%d-%m-%Y') }}</p>
+        {% if data.photo_path %}
+        <div class="photo">
+            <img src="{{ url_for('static', filename='uploads/' + data.photo_path.split('/')[-1]) }}">
         </div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Education</h2>
+        <p>{{ data.education }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Projects</h2>
+        <p>{{ data.projects }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Courses / Certificates</h2>
+        <p>{{ data.courses }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Skills</h2>
+        <p>{{ data.skills }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Languages Known</h2>
+        <p>{{ data.languages }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Hobbies / Interests</h2>
+        <p>{{ data.hobbies }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Personal Details</h2>
+        <p>Date of Birth: {{ data.dob }}</p>
+        <p>Gender: {{ data.gender }}</p>
+    </div>
+
+    <div class="sign">
+        <p>Signature</p>
+        <p>{{ data.sign }}</p>
+    </div>
+
+    <div class="download">
+        <a href="javascript:window.print()">🖨️ Print or Download PDF</a>
     </div>
 </body>
 </html>
