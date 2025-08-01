@@ -1,26 +1,24 @@
-from flask import Flask, render_template, request, send_file
-from io import BytesIO
-from xhtml2pdf import pisa
+from flask import Flask, render_template, request
+from datetime import datetime
+import os
 
 app = Flask(__name__)
 
 @app.route('/')
-def index():
+def form():
     return render_template('form.html')
 
-@app.route('/generate', methods=['POST'])
-def generate():
-    data = request.form
-    rendered = render_template('resume_template.html', data=data)
-
-    pdf = BytesIO()
-    pisa_status = pisa.CreatePDF(rendered, dest=pdf)
-
-    if pisa_status.err:
-        return "Error generating PDF", 500
-
-    pdf.seek(0)
-    return send_file(pdf, as_attachment=True, download_name='resume.pdf')
+@app.route('/resume', methods=['POST'])
+def resume():
+    data = request.form.to_dict(flat=False)
+    photo = request.files['photo']
+    if photo and photo.filename:
+        photo_path = os.path.join('static', photo.filename)
+        photo.save(photo_path)
+        data['photo_path'] = photo_path
+    else:
+        data['photo_path'] = None
+    return render_template('resume_template.html', data=data, datetime=datetime)
 
 if __name__ == '__main__':
     app.run(debug=True)

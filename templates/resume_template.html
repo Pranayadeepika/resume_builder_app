@@ -2,192 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Resume</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9; /* slate-100 */
-        }
-        @media print {
-            body {
-                background-color: #fff;
-            }
-            .no-print {
-                display: none;
-            }
-            .resume-container {
-                box-shadow: none;
-                border: none;
-                width: 100%;
-                margin: 0;
-            }
-            /* Adjust font size for better print readability */
-            h1 { font-size: 2.25rem !important; }
-            h2 { font-size: 1.75rem !important; }
-            h3 { font-size: 1.25rem !important; }
-            p, li, a, span { font-size: 0.9rem !important; }
-        }
-    </style>
+    <title>{{ data['name'][0] }} - Resume</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    <div class="resume">
+        <div class="header">
+            <h1>{{ data['name'][0] }}</h1>
+            {% if data['photo_path'] %}
+            <img src="/{{ data['photo_path'] }}" class="photo" alt="Profile Photo">
+            {% endif %}
+        </div>
+        <hr>
 
-    <!-- Print Button (hidden in print view) -->
-    <div class="flex justify-center p-6 no-print">
-        <button id="printBtn" class="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200">
-            Print / Save as PDF
-        </button>
+        <p><strong>Email:</strong> {{ data['email'][0] }}</p>
+        <p><strong>Phone:</strong> {{ data['phone'][0] }}</p>
+        <p><strong>Address:</strong> {{ data['address'][0] }}</p>
+        <p><strong>LinkedIn:</strong> {{ data['linkedin'][0] }}</p>
+        <p><strong>Date of Birth:</strong> {{ data['dob'][0] }}</p>
+        <p><strong>Gender:</strong> {{ data['gender'][0] }}</p>
+
+        <h2 class="section-title">Education</h2>
+        <p>{{ data['education'][0].replace('\\n', '<br>')|safe }}</p>
+
+        <h2 class="section-title">Projects</h2>
+        <p>{{ data['projects'][0].replace('\\n', '<br>')|safe }}</p>
+
+        <h2 class="section-title">Courses / Certificates</h2>
+        <p>{{ data['courses'][0].replace('\\n', '<br>')|safe }}</p>
+
+        <h2 class="section-title">Skills</h2>
+        <p>{{ data['skills'][0].replace('\\n', '<br>')|safe }}</p>
+
+        <h2 class="section-title">Languages Known</h2>
+        <p>{{ data['languages'][0].replace('\\n', '<br>')|safe }}</p>
+
+        <h2 class="section-title">Hobbies / Interests</h2>
+        <p>{{ data['hobbies'][0].replace('\\n', '<br>')|safe }}</p>
+
+        <br><br>
+        <div class="signature">
+            <p><strong>Signature:</strong> {{ data['sign'][0] }}</p>
+            <p><strong>Date:</strong> {{ datetime.now().strftime('%d-%m-%Y') }}</p>
+        </div>
     </div>
-
-    <!-- Resume Container -->
-    <main id="resumeContainer" class="resume-container w-full max-w-4xl mx-auto my-6 p-8 bg-white shadow-xl rounded-2xl border border-gray-200">
-        
-        <!-- Header Section -->
-        <header id="header" class="text-center pb-6 border-b-2 border-gray-200 mb-6">
-            <h1 class="text-4xl font-bold text-gray-800" id="resumeName">Full Name</h1>
-            <div class="flex flex-wrap justify-center items-center text-gray-600 mt-2 gap-x-4 gap-y-1 text-sm">
-                <span id="resumeEmail">email@example.com</span>
-                <span class="mx-1">•</span>
-                <span id="resumePhone">(123) 456-7890</span>
-                <span class="mx-1">•</span>
-                <a id="resumeLinkedIn" href="#" target="_blank" class="hover:text-blue-600 transition-colors duration-200">LinkedIn Profile</a>
-            </div>
-        </header>
-
-        <!-- Summary Section -->
-        <section id="summarySection" class="mb-6">
-            <p class="text-gray-700 leading-relaxed" id="resumeSummary"></p>
-        </section>
-
-        <!-- Education Section -->
-        <section id="educationSection" class="mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">Education</h2>
-            <div id="educationList" class="space-y-4">
-                <!-- Education items will be populated by JavaScript -->
-            </div>
-        </section>
-
-        <!-- Experience Section -->
-        <section id="experienceSection" class="mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">Experience</h2>
-            <div id="experienceList" class="space-y-4">
-                <!-- Experience items will be populated by JavaScript -->
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skillsSection" class="mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 mb-4">Skills</h2>
-            <div id="skillsList" class="flex flex-wrap gap-2">
-                <!-- Skills will be populated by JavaScript -->
-            </div>
-        </section>
-        
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const resumeDataString = sessionStorage.getItem('resumeData');
-            const printBtn = document.getElementById('printBtn');
-
-            if (!resumeDataString) {
-                // Handle case where no data is found (e.g., user opened this page directly)
-                const resumeContainer = document.getElementById('resumeContainer');
-                resumeContainer.innerHTML = '<div class="text-center p-10"><p class="text-lg text-gray-600">No resume data found. Please go back and fill out the form.</p><a href="form.html" class="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Go to Form</a></div>';
-                document.querySelector('.no-print').style.display = 'none';
-                return;
-            }
-
-            const resumeData = JSON.parse(resumeDataString);
-
-            // Populate Personal Details
-            document.getElementById('resumeName').textContent = resumeData.personal.name || 'Your Name';
-            document.getElementById('resumeEmail').textContent = resumeData.personal.email || 'email@example.com';
-            document.getElementById('resumePhone').textContent = resumeData.personal.phone || '';
-            const linkedInEl = document.getElementById('resumeLinkedIn');
-            if (resumeData.personal.linkedin) {
-                linkedInEl.href = resumeData.personal.linkedin;
-                linkedInEl.textContent = 'LinkedIn Profile';
-            } else {
-                linkedInEl.remove();
-            }
-            document.getElementById('resumeSummary').textContent = resumeData.personal.summary || '';
-
-            // Populate Education
-            const educationList = document.getElementById('educationList');
-            if (resumeData.education.length > 0) {
-                resumeData.education.forEach(edu => {
-                    if (edu.degree && edu.institution) {
-                        const div = document.createElement('div');
-                        div.className = 'pl-4 border-l-2 border-gray-200 space-y-1';
-                        div.innerHTML = `
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-semibold text-gray-800 text-lg">${edu.degree} - ${edu.institution}</h3>
-                                <span class="text-gray-500 text-sm">${edu.dates}</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">${edu.location}</p>
-                        `;
-                        educationList.appendChild(div);
-                    }
-                });
-            } else {
-                document.getElementById('educationSection').style.display = 'none';
-            }
-
-            // Populate Experience
-            const experienceList = document.getElementById('experienceList');
-            if (resumeData.experience.length > 0) {
-                resumeData.experience.forEach(exp => {
-                    if (exp.title && exp.company) {
-                        const div = document.createElement('div');
-                        div.className = 'pl-4 border-l-2 border-gray-200 space-y-1';
-                        const responsibilitiesHtml = exp.responsibilities.length > 0 ?
-                            `<ul class="list-disc list-inside mt-2 space-y-1 text-gray-700">
-                                ${exp.responsibilities.map(r => `<li>${r}</li>`).join('')}
-                            </ul>` : '';
-
-                        div.innerHTML = `
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h3 class="font-semibold text-gray-800 text-lg">${exp.title}</h3>
-                                    <p class="text-gray-600 font-medium">${exp.company}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-gray-500 text-sm">${exp.dates}</p>
-                                    <p class="text-gray-500 text-sm">${exp.location}</p>
-                                </div>
-                            </div>
-                            ${responsibilitiesHtml}
-                        `;
-                        experienceList.appendChild(div);
-                    }
-                });
-            } else {
-                document.getElementById('experienceSection').style.display = 'none';
-            }
-
-            // Populate Skills
-            const skillsList = document.getElementById('skillsList');
-            if (resumeData.skills.length > 0 && resumeData.skills[0] !== '') {
-                resumeData.skills.forEach(skill => {
-                    const span = document.createElement('span');
-                    span.className = 'bg-gray-200 text-gray-700 text-sm font-medium px-3 py-1 rounded-full';
-                    span.textContent = skill;
-                    skillsList.appendChild(span);
-                });
-            } else {
-                document.getElementById('skillsSection').style.display = 'none';
-            }
-
-            // Print button functionality
-            printBtn.addEventListener('click', () => {
-                window.print();
-            });
-        });
-    </script>
 </body>
 </html>

@@ -1,35 +1,56 @@
-.butterfly-container {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-    z-index: 0;
+body {
+    font-family: 'Segoe UI', sans-serif;
+    padding: 40px;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
-.butterfly {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png');
-    background-size: cover;
-    animation: fly 20s linear infinite;
-    top: calc(100% * var(--i));
-    left: calc(20% * var(--i));
-    opacity: 0.7;
+.resume {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-@keyframes fly {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-110vh) rotate(720deg);
-        opacity: 0;
-    }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    text-transform: uppercase;
+    border-bottom: 3px solid #000;
+    padding-bottom: 5px;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.photo {
+    width: 120px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-left: 20px;
+    border: 2px solid #007BFF;
+}
+
+.section-title {
+    color: #007BFF;
+    font-size: 1.4em;
+    margin-top: 30px;
+    border-bottom: 1px solid #007BFF;
+    padding-bottom: 4px;
+}
+
+p {
+    margin: 5px 0;
+}
+
+.signature {
+    text-align: right;
+    margin-top: 50px;
 }
