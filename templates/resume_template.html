@@ -1,103 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Resume</title>
+    <title>{{ name }}'s Resume</title>
     <style>
         body {
-            font-family: 'Times New Roman', Times, serif;
-            margin: 40px;
+            font-family: 'Times New Roman', serif;
             font-size: 11pt;
+            margin: 40px;
         }
         h2 {
+            color: #2a4f9c;
+            border-bottom: 1px solid #2a4f9c;
+            padding-bottom: 2px;
             font-size: 12pt;
-            color: #007bff;
-            border-bottom: 1px solid #007bff;
-            padding-bottom: 4px;
         }
-        .header {
+        .top-bar {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: start;
         }
-        .header h1 {
-            font-size: 22pt;
+        .name-block {
+            font-size: 20pt;
+            font-weight: bold;
             text-decoration: underline;
-            margin-bottom: 0;
         }
-        .photo img {
+        .photo-block img {
             width: 120px;
             height: auto;
-            border: none;
         }
         .section {
-            margin-top: 15px;
+            margin-top: 20px;
         }
-        .sign {
+        .signature-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-top: 40px;
+        }
+        .right-sign {
             text-align: right;
-            margin-top: 50px;
+        }
+        a {
+            color: #2a4f9c;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div>
-            <h1>{{ data.name }}</h1>
-            <p>Email: {{ data.email }}</p>
-            <p>Phone: {{ data.phone }}</p>
-            <p>Address: {{ data.address }}</p>
-            <p>LinkedIn: {{ data.linkedin }}</p>
-        </div>
-        {% if data.photo_path %}
-        <div class="photo">
-            <img src="{{ url_for('static', filename='uploads/' + data.photo_path.split('/')[-1]) }}">
-        </div>
-        {% endif %}
-    </div>
 
-    <div class="section">
-        <h2>Education</h2>
-        <p>{{ data.education }}</p>
+<div class="top-bar">
+    <div class="name-block">{{ name }}</div>
+    {% if photo %}
+    <div class="photo-block">
+        <img src="{{ photo }}" alt="Photo">
     </div>
+    {% endif %}
+</div>
 
-    <div class="section">
-        <h2>Projects</h2>
-        <p>{{ data.projects }}</p>
-    </div>
+<div class="section"><strong>Email:</strong> {{ email }} | <strong>Phone:</strong> {{ phone }}</div>
+<div class="section"><strong>Address:</strong> {{ address }}</div>
+<div class="section"><strong>LinkedIn:</strong> <a href="{{ linkedin }}">{{ linkedin }}</a></div>
 
-    <div class="section">
-        <h2>Courses / Certificates</h2>
-        <p>{{ data.courses }}</p>
-    </div>
+<div class="section">
+    <h2>Education</h2>
+    <ul>
+        {% for edu in education %}
+        <li>{{ edu }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <div class="section">
-        <h2>Skills</h2>
-        <p>{{ data.skills }}</p>
-    </div>
+<div class="section">
+    <h2>Projects</h2>
+    <ul>
+        {% for project in projects %}
+        <li>{{ project }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <div class="section">
-        <h2>Languages Known</h2>
-        <p>{{ data.languages }}</p>
-    </div>
+<div class="section">
+    <h2>Courses / Certifications</h2>
+    <ul>
+        {% for c in courses %}
+        <li>{{ c }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <div class="section">
-        <h2>Hobbies / Interests</h2>
-        <p>{{ data.hobbies }}</p>
-    </div>
+<div class="section">
+    <h2>Skills</h2>
+    <ul>
+        {% for skill in skills %}
+        <li>{{ skill.strip() }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <div class="section">
-        <h2>Personal Details</h2>
-        <p>Date of Birth: {{ data.dob }}</p>
-        <p>Gender: {{ data.gender }}</p>
-    </div>
+<div class="section">
+    <h2>Languages Known</h2>
+    <ul>
+        {% for lang in languages %}
+        <li>{{ lang.strip() }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <div class="sign">
-        <p>Signature</p>
-        <p>{{ data.sign }}</p>
-    </div>
+<div class="section">
+    <h2>Hobbies / Interests</h2>
+    <ul>
+        {% for hobby in hobbies %}
+        <li>{{ hobby.strip() }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <div class="download">
-        <a href="javascript:window.print()">🖨️ Print or Download PDF</a>
+<div class="section">
+    <h2>Personal Details</h2>
+    <p><strong>Date of Birth:</strong> {{ dob }}</p>
+    <p><strong>Gender:</strong> {{ gender }}</p>
+</div>
+
+<div class="signature-block">
+    <div></div>
+    <div class="right-sign">
+        <p><strong>Sign:</strong> {{ sign }}</p>
+        <p>____________________</p>
     </div>
+</div>
+
+<div style="text-align: right; margin: 20px;">
+    <a href="/download" style="background: #28a745; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Download as PDF</a>
+</div>
+
 </body>
 </html>

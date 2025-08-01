@@ -1,29 +1,41 @@
 from flask import Flask, render_template, request, send_file
-from werkzeug.utils import secure_filename
-import os
-from datetime import datetime
+import pdfkit
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'static/uploads'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+resume_data = {}
 
 @app.route('/')
-def home():
+def index():
     return render_template('form.html')
 
 @app.route('/resume', methods=['POST'])
 def resume():
-    data = request.form.to_dict()
-    photo = request.files['photo']
-    if photo:
-        filename = secure_filename(photo.filename)
-        filepath = os.path.join(UPLOAD_FOLDER, filename)
-        photo.save(filepath)
-        data['photo_path'] = filepath
-    else:
-        data['photo_path'] = None
+    global resume_data
+    resume_data = {
+        'name': request.form['name'],
+        'email': request.form['email'],
+        'phone': request.form['phone'],
+        'address': request.form['address'],
+        'linkedin': request.form['linkedin'],
+        'photo': request.form['photo'],
+        'education': request.form['education'].split(','),
+        'projects': request.form['projects'].split(','),
+        'courses': request.form['courses'].split(','),
+        'skills': request.form['skills'].split(','),
+        'languages': request.form['languages'].split(','),
+        'hobbies': request.form['hobbies'].split(','),
+        'dob': request.form['dob'],
+        'gender': request.form['gender'],
+        'sign': request.form['sign']
+    }
+    return render_template('resume_template.html', **resume_data)
 
-    return render_template('resume_template.html', data=data)
+@app.route('/download')
+def download_pdf():
+    rendered = render_template('resume_template.html', **resume_data)
+    pdfkit.from_string(rendered, 'resume.pdf')
+    return send_file('resume.pdf', as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
