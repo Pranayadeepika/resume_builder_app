@@ -1,138 +1,46 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ name }}'s Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Times New Roman', serif;
-            font-size: 11pt;
-            margin: 40px;
-        }
-        h2 {
-            color: #2a4f9c;
-            border-bottom: 1px solid #2a4f9c;
-            padding-bottom: 2px;
-            font-size: 12pt;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-        }
-        .name-block {
-            font-size: 20pt;
-            font-weight: bold;
-            text-decoration: underline;
-        }
-        .photo-block img {
-            width: 120px;
-            height: auto;
-        }
-        .section {
-            margin-top: 20px;
-        }
-        .signature-block {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            margin-top: 40px;
-        }
-        .right-sign {
-            text-align: right;
-        }
-        a {
-            color: #2a4f9c;
-            text-decoration: none;
-        }
+        body { font-family: 'Roboto', sans-serif; font-size: 12pt; margin: 40px; }
+        h2 { color: #2a4f9c; border-bottom: 1px solid #2a4f9c; padding-bottom: 5px; }
+        .top-bar { display: flex; justify-content: space-between; }
+        .photo-block img { width: 120px; border-radius: 6px; }
+        .section { margin-top: 20px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 5px; }
+        .signature-block { display: flex; justify-content: flex-end; align-items: center; margin-top: 40px; }
+        .signature-block img { max-height: 50px; margin-left: 20px; }
     </style>
 </head>
 <body>
-
-<div class="top-bar">
-    <div class="name-block">{{ name }}</div>
-    {% if photo %}
-    <div class="photo-block">
-        <img src="{{ photo }}" alt="Photo">
+    <div class="top-bar">
+        <h1>{{ name }}</h1>
+        {% if photo %}<div class="photo-block"><img src="{{ photo }}" alt="Photo"></div>{% endif %}
     </div>
-    {% endif %}
-</div>
 
-<div class="section"><strong>Email:</strong> {{ email }} | <strong>Phone:</strong> {{ phone }}</div>
-<div class="section"><strong>Address:</strong> {{ address }}</div>
-<div class="section"><strong>LinkedIn:</strong> <a href="{{ linkedin }}">{{ linkedin }}</a></div>
+    <div><strong>Email:</strong> {{ email }} | <strong>Phone:</strong> {{ phone }}</div>
+    <div><strong>Address:</strong> {{ address }}</div>
+    <div><strong>LinkedIn:</strong> <a href="{{ linkedin }}">{{ linkedin }}</a></div>
 
-<div class="section">
-    <h2>Education</h2>
-    <ul>
-        {% for edu in education %}
-        <li>{{ edu }}</li>
-        {% endfor %}
-    </ul>
-</div>
+    <div class="section"><h2>Education</h2><ul>{% for edu in education %}<li>{{ edu }}</li>{% endfor %}</ul></div>
+    <div class="section"><h2>Projects</h2><ul>{% for project in projects %}<li>{{ project }}</li>{% endfor %}</ul></div>
+    <div class="section"><h2>Courses / Certifications</h2><ul>{% for c in courses %}<li>{{ c }}</li>{% endfor %}</ul></div>
+    <div class="section"><h2>Skills</h2><ul>{% for skill in skills %}<li>{{ skill.strip() }}</li>{% endfor %}</ul></div>
+    <div class="section"><h2>Languages Known</h2><ul>{% for lang in languages %}<li>{{ lang.strip() }}</li>{% endfor %}</ul></div>
+    <div class="section"><h2>Hobbies / Interests</h2><ul>{% for hobby in hobbies %}<li>{{ hobby.strip() }}</li>{% endfor %}</ul></div>
+    <div class="section"><h2>Personal Details</h2><p><strong>Date of Birth:</strong> {{ dob }}</p><p><strong>Gender:</strong> {{ gender }}</p></div>
 
-<div class="section">
-    <h2>Projects</h2>
-    <ul>
-        {% for project in projects %}
-        <li>{{ project }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div class="section">
-    <h2>Courses / Certifications</h2>
-    <ul>
-        {% for c in courses %}
-        <li>{{ c }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div class="section">
-    <h2>Skills</h2>
-    <ul>
-        {% for skill in skills %}
-        <li>{{ skill.strip() }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div class="section">
-    <h2>Languages Known</h2>
-    <ul>
-        {% for lang in languages %}
-        <li>{{ lang.strip() }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div class="section">
-    <h2>Hobbies / Interests</h2>
-    <ul>
-        {% for hobby in hobbies %}
-        <li>{{ hobby.strip() }}</li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div class="section">
-    <h2>Personal Details</h2>
-    <p><strong>Date of Birth:</strong> {{ dob }}</p>
-    <p><strong>Gender:</strong> {{ gender }}</p>
-</div>
-
-<div class="signature-block">
-    <div></div>
-    <div class="right-sign">
-        <p><strong>Sign:</strong> {{ sign }}</p>
-        <p>____________________</p>
+    <div class="signature-block">
+        <strong>Signature:</strong>
+        {% if signature %}<img src="{{ signature }}" alt="Signature">{% endif %}
     </div>
-</div>
 
-<div style="text-align: right; margin: 20px;">
-    <a href="/download" style="background: #28a745; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Download as PDF</a>
-</div>
-
+    <div style="text-align: right; margin-top: 30px;">
+        <a href="/download" style="padding: 10px 15px; background: #28a745; color: white; text-decoration: none; border-radius: 5px;">Download as PDF</a>
+        <a href="/download-docx" style="padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">Download as DOCX</a>
+    </div>
 </body>
 </html>
