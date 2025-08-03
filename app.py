@@ -36,6 +36,7 @@ def resume():
     if sign_file and sign_file.filename:
         sign_name = secure_filename(sign_file.filename)
         sign_path = os.path.join(app.config['UPLOAD_FOLDER'], sign_name)
+        sign_file.save(sign_path)
         sign_url = url_for('static', filename=f'uploads/{sign_name}')
 
     resume_data = {
@@ -61,7 +62,7 @@ def resume():
 def download_pdf():
     rendered = render_template('resume_template.html', **resume_data)
     result = BytesIO()
-    pisa_status = pisa.CreatePDF(rendered, dest=result)
+    pisa.CreatePDF(rendered, dest=result)
     result.seek(0)
     return send_file(result, as_attachment=True, download_name='resume.pdf', mimetype='application/pdf')
 
@@ -106,5 +107,7 @@ def download_docx():
     result.seek(0)
     return send_file(result, as_attachment=True, download_name='resume.docx', mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
 
+# ✅ Port binding for Render deployment
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
